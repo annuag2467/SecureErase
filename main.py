@@ -1,4 +1,4 @@
-from cli.cli import run_cli
+from cli.cli import SecureEraseCLI
 
 if __name__ == "__main__":
-    run_cli()
+    SecureEraseCLI().run()

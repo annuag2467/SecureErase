@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 class Logger:
-    def _init_(self, log_file='logs/erasure_log.csv'):
+    def __init__(self, log_file='logs/erasure_log.csv'):
         self.log_file = log_file
 
         log_dir = os.path.dirname(log_file)
@@ -15,7 +15,6 @@ class Logger:
             with open(self.log_file, mode='w', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(['Timestamp', 'File Path', 'Passes', 'Success'])
-
 
     def log(self, file_path, passes, success):
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

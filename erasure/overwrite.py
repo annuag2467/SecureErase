@@ -2,10 +2,10 @@ import os
 from utils.logger import Logger
 
 class Overwriter:
-    def __init__(self):
-         self.logger = Logger()
+    def __init__(self, logger=None):
+         self.logger = logger or Logger()
 
-    def secure_delete(self, file_path, passes=3):
+    def overwrite_and_delete(self, file_path, passes=3):
 
         if not os.path.isfile(file_path):
             print(f"[!] Skipping (not a file): {file_path}")
@@ -30,19 +30,19 @@ class Overwriter:
 
         except Exception as e:
             print(f"[X] Error erasing {file_path}: {e}")
-            self.logger.log(path, passes, success=False)
+            self.logger.log(file_path, passes, success=False)
             return False
 
     def process_path(self, path, passes=3):
         """Process a file or all files in a folder."""
         if os.path.isfile(path):
-            self.secure_delete(path, passes)
+            self.overwrite_and_delete(path, passes)
 
         elif os.path.isdir(path):
             print(f"[→] Entering folder: {path}")
             for root, dirs, files in os.walk(path):
                 for name in files:
                     file_path = os.path.join(root, name)
-                    self.secure_delete(file_path, passes)
+                    self.overwrite_and_delete(file_path, passes)
         else:
             print(f"[!] Invalid path: {path}")
