@@ -77,5 +77,3 @@ class SecureEraseCLI:
         print(f"\nOperation completed: {success_count}/{total_count} paths processed successfully.")
 
 
-# if __name__ == "__main__":
-#     SecureEraseCLI().run()

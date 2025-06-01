@@ -1,1 +1,1 @@
-# No external packages required
+pytest>=7.0.0

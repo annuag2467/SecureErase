@@ -1,5 +1,4 @@
 import os
-import stat
 from utils.logger import Logger
 
 
@@ -7,31 +6,6 @@ class Overwriter:
     def __init__(self, logger=None):
         self.logger = logger or Logger()
 
-    def _is_safe_to_delete(self, file_path):
-        """Check if file is safe to delete (not a symlink, device file, etc.)"""
-        try:
-            file_stat = os.lstat(file_path)  # Use lstat to not follow symlinks
-            
-            # Check if it's a symbolic link
-            if stat.S_ISLNK(file_stat.st_mode):
-                print(f"[!] Skipping symbolic link: {file_path}")
-                return False
-            
-            # Check if it's a regular file
-            if not stat.S_ISREG(file_stat.st_mode):
-                print(f"[!] Skipping non-regular file: {file_path}")
-                return False
-            
-            # Check if we have write permission
-            if not os.access(file_path, os.W_OK):
-                print(f"[!] No write permission: {file_path}")
-                return False
-                
-            return True
-            
-        except (OSError, IOError) as e:
-            print(f"[!] Cannot access file {file_path}: {e}")
-            return False
 
     def overwrite_and_delete(self, file_path, passes=3):
         """Securely overwrite and delete a single file"""
@@ -47,10 +21,6 @@ class Overwriter:
             self.logger.log(file_path, passes, success=False)
             return False
 
-        # Safety checks
-        if not self._is_safe_to_delete(file_path):
-            self.logger.log(file_path, passes, success=False)
-            return False
 
         try:
             file_size = os.path.getsize(file_path)
